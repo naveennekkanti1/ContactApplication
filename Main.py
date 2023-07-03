@@ -1,7 +1,6 @@
 import os
 
 # Function to create a contact
-# Function to create a contact
 def create_contact():
     name = input("Enter the contact's name: ")
     phone = input("Enter the contact's phone number: ")
@@ -14,7 +13,7 @@ def create_contact():
             if contact_data[0].lower() == name.lower():
                 print("Contact already exists.")
                 return
-    with open("Data/contacts.csv", "a") as file:
+    with open("contacts.csv", "a") as file:
         file.write(new_contact)
     print("Contact created successfully.")
 
@@ -22,7 +21,7 @@ def create_contact():
 def update_contact():
     name = input("Enter the contact's name to update: ")
     updated_contact = ""
-    with open("Data/contacts.csv", "r") as file:
+    with open("contacts.csv", "r") as file:
         contacts = file.readlines()
         for contact in contacts:
             contact_data = contact.strip().split(",")
@@ -32,7 +31,7 @@ def update_contact():
                 updated_contact = f"{name},{new_phone},{new_email}\n"
             else:
                 updated_contact = contact
-    with open("Data/contacts.csv", "w") as file:
+    with open("contacts.csv", "w") as file:
         file.writelines(updated_contact)
     print("Contact updated successfully.")
 
@@ -40,19 +39,19 @@ def update_contact():
 def delete_contact():
     name = input("Enter the contact's name to delete: ")
     updated_contacts = ""
-    with open("Data/contacts.csv", "r") as file:
+    with open("contacts.csv", "r") as file:
         contacts = file.readlines()
         for contact in contacts:
             contact_data = contact.strip().split(",")
             if contact_data[0].lower() != name.lower():
                 updated_contacts += contact
-    with open("Data/contacts.csv", "w") as file:
+    with open("contacts.csv", "w") as file:
         file.writelines(updated_contacts)
     print("Contact deleted successfully.")
 
 # Function to display all contacts
 def display_all_contacts():
-    with open("Data/contacts.csv", "r") as file:
+    with open("contacts.csv", "r") as file:
         contacts = file.readlines()
         if not contacts:
             print("No contacts found.")
@@ -64,7 +63,7 @@ def display_all_contacts():
 # Function to display a single contact
 def display_single_contact():
     name = input("Enter the contact's name to display: ")
-    with open("Data/contacts.csv", "r") as file:
+    with open("contacts.csv", "r") as file:
         contacts = file.readlines()
         for contact in contacts:
             contact_data = contact.strip().split(",")
@@ -102,8 +101,8 @@ def main():
             print("Invalid choice. Please try again.")
 
 # Create a contacts.csv file if it doesn't exist
-if not os.path.isfile("Data/contacts.csv"):
-    open("Data/contacts.csv", "w").close()
+if not os.path.isfile("contacts.csv"):
+    open("contacts.csv", "w").close()
 
 # Start the application
 main()
