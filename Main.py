@@ -1,5 +1,5 @@
 import os
-from tkinter import Tk, Label, Entry, Button, Text, Scrollbar, END, messagebox
+from tkinter import Tk, Label, Entry, Button, messagebox
 
 # Function to create a contact
 def create_contact():
@@ -21,9 +21,9 @@ def create_contact():
 
 # Function to clear the entry fields
 def clear_entries():
-    name_entry.delete(0, END)
-    phone_entry.delete(0, END)
-    email_entry.delete(0, END)
+    name_entry.delete(0, 'end')
+    phone_entry.delete(0, 'end')
+    email_entry.delete(0, 'end')
 
 # Create the main window
 window = Tk()
@@ -51,5 +51,5 @@ create_button.grid(row=3, column=0, padx=5, pady=5, sticky="w")
 clear_button = Button(window, text="Clear", command=clear_entries)
 clear_button.grid(row=3, column=1, padx=5, pady=5, sticky="w")
 
-# Run the main loop
+# Start the GUI event loop
 window.mainloop()
