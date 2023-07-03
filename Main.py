@@ -1,55 +1,109 @@
 import os
-from tkinter import Tk, Label, Entry, Button, messagebox
 
 # Function to create a contact
+# Function to create a contact
 def create_contact():
-    name = name_entry.get()
-    phone = phone_entry.get()
-    email = email_entry.get()
+    name = input("Enter the contact's name: ")
+    phone = input("Enter the contact's phone number: ")
+    email = input("Enter the contact's email address: ")
     new_contact = f"{name},{phone},{email}\n"
-    with open("contacts.txt", "r") as file:
+    with open("Data/contacts.csv", "r") as file:
         contacts = file.readlines()
         for contact in contacts:
             contact_data = contact.strip().split(",")
             if contact_data[0].lower() == name.lower():
-                messagebox.showinfo("Duplicate Contact", "Contact already exists.")
+                print("Contact already exists.")
                 return
-    with open("contacts.txt", "a") as file:
+    with open("Data/contacts.csv", "a") as file:
         file.write(new_contact)
-    messagebox.showinfo("Success", "Contact created successfully.")
-    clear_entries()
+    print("Contact created successfully.")
 
-# Function to clear the entry fields
-def clear_entries():
-    name_entry.delete(0, 'end')
-    phone_entry.delete(0, 'end')
-    email_entry.delete(0, 'end')
+# Function to update a contact
+def update_contact():
+    name = input("Enter the contact's name to update: ")
+    updated_contact = ""
+    with open("Data/contacts.csv", "r") as file:
+        contacts = file.readlines()
+        for contact in contacts:
+            contact_data = contact.strip().split(",")
+            if contact_data[0].lower() == name.lower():
+                new_phone = input("Enter the updated phone number: ")
+                new_email = input("Enter the updated email address: ")
+                updated_contact = f"{name},{new_phone},{new_email}\n"
+            else:
+                updated_contact = contact
+    with open("Data/contacts.csv", "w") as file:
+        file.writelines(updated_contact)
+    print("Contact updated successfully.")
 
-# Create the main window
-window = Tk()
-window.title("Contact Application")
+# Function to delete a contact
+def delete_contact():
+    name = input("Enter the contact's name to delete: ")
+    updated_contacts = ""
+    with open("Data/contacts.csv", "r") as file:
+        contacts = file.readlines()
+        for contact in contacts:
+            contact_data = contact.strip().split(",")
+            if contact_data[0].lower() != name.lower():
+                updated_contacts += contact
+    with open("Data/contacts.csv", "w") as file:
+        file.writelines(updated_contacts)
+    print("Contact deleted successfully.")
 
-# Create labels
-name_label = Label(window, text="Name:")
-name_label.grid(row=0, column=0, padx=5, pady=5, sticky="w")
-phone_label = Label(window, text="Phone:")
-phone_label.grid(row=1, column=0, padx=5, pady=5, sticky="w")
-email_label = Label(window, text="Email:")
-email_label.grid(row=2, column=0, padx=5, pady=5, sticky="w")
+# Function to display all contacts
+def display_all_contacts():
+    with open("Data/contacts.csv", "r") as file:
+        contacts = file.readlines()
+        if not contacts:
+            print("No contacts found.")
+        else:
+            for contact in contacts:
+                contact_data = contact.strip().split(",")
+                print(f"Name: {contact_data[0]}\nPhone: {contact_data[1]}\nEmail: {contact_data[2]}\n")
 
-# Create entry fields
-name_entry = Entry(window, width=30)
-name_entry.grid(row=0, column=1, padx=5, pady=5)
-phone_entry = Entry(window, width=30)
-phone_entry.grid(row=1, column=1, padx=5, pady=5)
-email_entry = Entry(window, width=30)
-email_entry.grid(row=2, column=1, padx=5, pady=5)
+# Function to display a single contact
+def display_single_contact():
+    name = input("Enter the contact's name to display: ")
+    with open("Data/contacts.csv", "r") as file:
+        contacts = file.readlines()
+        for contact in contacts:
+            contact_data = contact.strip().split(",")
+            if contact_data[0].lower() == name.lower():
+                print(f"Name: {contact_data[0]}\nPhone: {contact_data[1]}\nEmail: {contact_data[2]}\n")
+                return
+        print("Contact not found.")
 
-# Create buttons
-create_button = Button(window, text="Create", command=create_contact)
-create_button.grid(row=3, column=0, padx=5, pady=5, sticky="w")
-clear_button = Button(window, text="Clear", command=clear_entries)
-clear_button.grid(row=3, column=1, padx=5, pady=5, sticky="w")
+# Main program loop
+def main():
+    while True:
+        print("##############################   Contact Application   #################################")
+        print("1. Create Contact")
+        print("2. Update Contact")
+        print("3. Delete Contact")
+        print("4. Display All Contacts")
+        print("5. Display Single Contact")
+        print("6. Exit")
+        choice = input("Enter your choice (1-6): ")
 
-# Start the GUI event loop
-window.mainloop()
+        if choice == "1":
+            create_contact()
+        elif choice == "2":
+            update_contact()
+        elif choice == "3":
+            delete_contact()
+        elif choice == "4":
+            display_all_contacts()
+        elif choice == "5":
+            display_single_contact()
+        elif choice == "6":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+# Create a contacts.csv file if it doesn't exist
+if not os.path.isfile("Data/contacts.csv"):
+    open("Data/contacts.csv", "w").close()
+
+# Start the application
+main()
